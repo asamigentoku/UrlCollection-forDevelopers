@@ -13,8 +13,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Url Gather",
-  description: "収集したURLをシンプルにまとめたリンク集",
+  title: "DevDocs",
+  description: "全世界のエンジニアのための公式ドキュメント集",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({
