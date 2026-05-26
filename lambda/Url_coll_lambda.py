@@ -50,11 +50,14 @@ for row in rows[1:]:
     # SQLのレコードを分解するように、各カラム（列）を変数に代入する
     name     = row[0]  # A列：名前
     url = row[1]  # B列：カテゴリ（mobile, ai など）
-    category = row[2]  # C列：URL
+    category = row[2]# C列：URL
+    logo = row[3]
     data = {
         "name": name,
         "category": category,
-        "url": url,  # サーバー時間のタイムスタンプ（任意）
+        "url": url,
+        "logo": logo,
+        # サーバー時間のタイムスタンプ（任意）
     }
 
     # 【ここが書き込み処理】
