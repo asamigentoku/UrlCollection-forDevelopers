@@ -19,7 +19,14 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install -r lambda/requirements.txt -t lambda/package
+        run: |
+          pip install \
+            --platform manylinux2014_x86_64 \
+            --implementation cp \
+            --python-version 3.12 \
+            --only-binary=:all: \
+            -t lambda/package \
+            firebase-admin requests
 
       - name: Build zip
         run: |
