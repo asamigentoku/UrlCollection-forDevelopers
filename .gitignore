@@ -1,2 +1,6 @@
 .env
 url-collection-f6e8a-firebase-adminsdk-fbsvc-b2f6750911.json
+.idea
+.vscode
+.DS_Store
+.DS_Store?
