@@ -1,4 +1,4 @@
-from dotenv import load_dotenv
+
 import os
 import json
 import requests
@@ -19,7 +19,6 @@ def create_firebase_client(cred):
     return firebase_db
 
 def load_sheet():
-    load_dotenv()
     API_KEY        = os.getenv("GOOGLE_API_KEY")
     SPREADSHEET_ID = os.getenv("SPREADSHEET_ID")
     SHEET_RANGE    = "my_coll!A1:Z1000"
@@ -78,6 +77,8 @@ def lambda_handler(event, context):
 
 if __name__ == "__main__":
     cred = credentials.Certificate('url-collection-f6e8a-firebase-adminsdk-fbsvc-b2f6750911.json')
+    from dotenv import load_dotenv
+    load_dotenv()
     db=create_firebase_client(cred)
     ref = db.collection('URL_Collect')
     rows = load_sheet()
