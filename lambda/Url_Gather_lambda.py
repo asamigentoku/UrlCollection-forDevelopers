@@ -1,4 +1,3 @@
-from dotenv import load_dotenv
 import os
 import json
 import requests
@@ -19,9 +18,8 @@ def create_firebase_client(cred):
     return firebase_db
 
 def load_sheet():
-    load_dotenv()
-    API_KEY        = os.getenv("GOOGLE_API_KEY")
-    SPREADSHEET_ID = os.getenv("SPREADSHEET_ID")
+    API_KEY = os.environ.get('GOOGLE_API_KEY')
+    SPREADSHEET_ID = os.environ.get("SPREADSHEET_ID")
     SHEET_RANGE    = "my_coll!A1:Z1000"
     url = f"https://sheets.googleapis.com/v4/spreadsheets/{SPREADSHEET_ID}/values/{SHEET_RANGE}"
     rows = requests.get(url, params={"key": API_KEY}).json().get("values", [])
