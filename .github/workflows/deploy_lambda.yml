@@ -21,6 +21,9 @@ jobs:
             public.ecr.aws/lambda/python:3.12 \
             install firebase-admin requests -t /var/task/package --upgrade
 
+      - name: Fix package directory permissions
+        run: sudo chmod -R 777 lambda/package/
+
       - name: Build zip
         run: |
           cp lambda/Url_Gather_lambda.py lambda/package/
