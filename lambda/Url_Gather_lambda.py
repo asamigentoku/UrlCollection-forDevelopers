@@ -1,4 +1,4 @@
-
+from dotenv import load_dotenv
 import os
 import json
 import requests
@@ -19,6 +19,7 @@ def create_firebase_client(cred):
     return firebase_db
 
 def load_sheet():
+    load_dotenv()
     API_KEY        = os.getenv("GOOGLE_API_KEY")
     SPREADSHEET_ID = os.getenv("SPREADSHEET_ID")
     SHEET_RANGE    = "my_coll!A1:Z1000"
@@ -67,7 +68,8 @@ def write_firebase(ref,rows):
     print("すべてのデータをfirebaseに書き込みました")
 
 def lambda_handler(event, context):
-    cred = get_firebase_cert()
+    cred_dict = get_firebase_cert()
+    cred = credentials.Certificate(cred_dict)
     database= create_firebase_client(cred)
     table_name= database.collection('URL_Collect')
     datas = load_sheet()
@@ -77,8 +79,6 @@ def lambda_handler(event, context):
 
 if __name__ == "__main__":
     cred = credentials.Certificate('url-collection-f6e8a-firebase-adminsdk-fbsvc-b2f6750911.json')
-    from dotenv import load_dotenv
-    load_dotenv()
     db=create_firebase_client(cred)
     ref = db.collection('URL_Collect')
     rows = load_sheet()
