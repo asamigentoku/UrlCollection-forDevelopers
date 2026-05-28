@@ -16,11 +16,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: front-react/package-lock.json
 
       - name: Install dependencies
+        working-directory: front-react
         run: npm ci
 
-      - name: npm build
+      - name: Build
+        working-directory: front-react
         run: npm run build
 
       - name: Configure AWS credentials
@@ -32,12 +36,13 @@ jobs:
 
       - name: Sync to S3
         run: |
-          aws s3 sync ./build s3://${{ secrets.S3_BUCKET_NAME }} \
+          aws s3 sync ./front-react/out s3://${{ secrets.S3_BUCKET_NAME }} \
             --delete
 
 #      - name: Invalidate CloudFront cache
-#        # CloudFront を使う場合のみ
-#        if: secrets.CLOUDFRONT_DISTRIBUTION_ID != ''
+#        if: ${{ env.CLOUDFRONT_DISTRIBUTION_ID != '' }}
+#        env:
+#          CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
 #        run: |
 #          aws cloudfront create-invalidation \
 #            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
