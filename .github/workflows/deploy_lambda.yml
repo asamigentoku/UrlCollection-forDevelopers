@@ -16,9 +16,13 @@ jobs:
       - name: Build package in Lambda Docker container
         run: |
           docker run --rm \
+            --entrypoint pip \
             -v "${{ github.workspace }}/lambda":/var/task \
             public.ecr.aws/lambda/python:3.12 \
-            pip install firebase-admin requests -t /var/task/package --upgrade
+            install firebase-admin requests -t /var/task/package --upgrade
+
+      - name: Verify cffi in zip
+        run: unzip -l function.zip | grep cffi
 
       - name: Build zip
         run: |
