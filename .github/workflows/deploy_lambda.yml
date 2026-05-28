@@ -24,6 +24,7 @@ jobs:
       - name: Fix package directory permissions
         run: sudo chmod -R 777 lambda/package/
 
+
       - name: Build zip
         run: |
           cp lambda/Url_Gather_lambda.py lambda/package/
