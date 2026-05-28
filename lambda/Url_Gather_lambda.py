@@ -23,9 +23,13 @@ def load_sheet():
     SHEET_RANGE    = "my_coll!A1:Z1000"
     params = urllib.parse.urlencode({"key": API_KEY})
     url = f"https://sheets.googleapis.com/v4/spreadsheets/{SPREADSHEET_ID}/values/{SHEET_RANGE}?{params}"
-    with urllib.request.urlopen(url) as res:
-        body = json.loads(res.read().decode("utf-8"))
-
+    try:
+        with urllib.request.urlopen(url) as res:
+            body = json.loads(res.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        print(e.read().decode("utf-8"))
+        # 詳細エラーを表示
+        raise
     return body.get("values", [])
 
 def delete_collection(db_client,col_ref, batch_size=500):
