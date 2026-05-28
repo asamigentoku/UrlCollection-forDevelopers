@@ -46,11 +46,8 @@ jobs:
           aws s3 sync ./front-react/out s3://${{ secrets.S3_BUCKET_NAME }} \
             --delete
 
-#      - name: Invalidate CloudFront cache
-#        if: ${{ env.CLOUDFRONT_DISTRIBUTION_ID != '' }}
-#        env:
-#          CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
-#        run: |
-#          aws cloudfront create-invalidation \
-#            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
-#            --paths "/*"
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"
