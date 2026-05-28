@@ -14,10 +14,7 @@ def get_firebase_cert():
 def create_firebase_client(cred):
     if not firebase_admin._apps:  # 初期化済みかチェック
         firebase_admin.initialize_app(cred)
-    app = firebase_admin.initialize_app(cred)
     firebase_db = firestore.client()
-    # ref = db.collection('URL_Collect')
-    # return ref
     return firebase_db
 
 def load_sheet():
