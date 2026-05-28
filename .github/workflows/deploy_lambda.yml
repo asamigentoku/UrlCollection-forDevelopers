@@ -13,32 +13,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install dependencies
+      - name: Build package in Lambda Docker container
         run: |
-          pip install \
-            --platform manylinux2014_x86_64 \
-            --implementation cp \
-            --python-version 3.12 \
-            --only-binary=:all: \
-            -t lambda/package \
-            firebase-admin requests
+          docker run --rm \
+            -v "${{ github.workspace }}/lambda":/var/task \
+            public.ecr.aws/lambda/python:3.12 \
+            pip install firebase-admin requests -t /var/task/package --upgrade
 
       - name: Build zip
         run: |
           cp lambda/Url_Gather_lambda.py lambda/package/
           cd lambda/package && zip -r ../../function.zip .
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
+
       - name: Deploy to Lambda
         run: |
           aws lambda update-function-code \
             --function-name my-firebase-sheet \
             --zip-file fileb://function.zip
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ap-northeast-1
