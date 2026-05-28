@@ -1,7 +1,8 @@
 import os
 import json
-import requests
 import boto3
+import urllib.request
+import urllib.parse
 import firebase_admin
 from firebase_admin import credentials,firestore
 
@@ -21,9 +22,12 @@ def load_sheet():
     API_KEY = os.environ.get('GOOGLE_API_KEY')
     SPREADSHEET_ID = os.environ.get("SPREADSHEET_ID")
     SHEET_RANGE    = "my_coll!A1:Z1000"
-    url = f"https://sheets.googleapis.com/v4/spreadsheets/{SPREADSHEET_ID}/values/{SHEET_RANGE}"
-    rows = requests.get(url, params={"key": API_KEY}).json().get("values", [])
-    return rows
+    params = urllib.parse.urlencode({"key": API_KEY})
+    url = f"https://sheets.googleapis.com/v4/spreadsheets/{SPREADSHEET_ID}/values/{SHEET_RANGE}?{params}"
+    with urllib.request.urlopen(url) as res:
+        body = json.loads(res.read().decode("utf-8"))
+
+    return body.get("values", [])
 
 def delete_collection(db_client,col_ref, batch_size=500):
     """
