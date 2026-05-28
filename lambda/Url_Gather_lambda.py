@@ -11,6 +11,11 @@ def get_firebase_cert():
     secret = client.get_secret_value(SecretId="url-collection-firebase-secret")
     return json.loads(secret["SecretString"])
 
+def get_sheets_secret():
+    client = boto3.client("secretsmanager", region_name="ap-northeast-1")
+    secret = client.get_secret_value(SecretId="google-sheet-secret")
+    return json.loads(secret["SecretString"])
+
 def create_firebase_client(cred):
     if not firebase_admin._apps:  # 初期化済みかチェック
         firebase_admin.initialize_app(cred)
@@ -18,8 +23,9 @@ def create_firebase_client(cred):
     return firebase_db
 
 def load_sheet():
-    API_KEY = os.environ.get('GOOGLE_API_KEY')
-    SPREADSHEET_ID = os.environ.get("SPREADSHEET_ID")
+    secret = get_sheets_secret()
+    API_KEY = secret["GOOGLE_API_KEY"]
+    SPREADSHEET_ID = secret["SPREADSHEET_ID"]
     SHEET_RANGE    = "my_coll!A1:Z1000"
     params = urllib.parse.urlencode({"key": API_KEY})
     url = f"https://sheets.googleapis.com/v4/spreadsheets/{SPREADSHEET_ID}/values/{SHEET_RANGE}?{params}"
