@@ -51,12 +51,12 @@ for row in rows[1:]:
     name     = row[0]  # A列：名前
     url = row[1]  # B列：カテゴリ（mobile, ai など）
     category = row[2]# C列：URL
-    logo = row[3]
+    # logo = row[3]
     data = {
         "name": name,
         "category": category,
         "url": url,
-        "logo": logo,
+        # "logo": logo,
         # サーバー時間のタイムスタンプ（任意）
     }
 
