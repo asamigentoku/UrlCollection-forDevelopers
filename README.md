@@ -59,5 +59,5 @@ Cloudflareでドメインを取得し、AWS cloudfrontにホスティング
 
 1. リポジトリをクローンします:
 ```bash
-   git clone [https://github.com/あなたのユーザー名/UrlCollection-forDevelopers.git](https://github.com/あなたのユーザー名/UrlCollection-forDevelopers.git)
-   cd UrlCollection-forDevelopers
+   git clone https://github.com/asamigentoku/Url-Gather.git
+   cd Url-Gather

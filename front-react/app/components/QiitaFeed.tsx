@@ -32,7 +32,7 @@ function formatDate(iso: string) {
     return new Date(iso).toLocaleDateString("ja-JP", { year: "numeric", month: "short", day: "numeric" });
 }
 
-export default function QiitaFeed() {
+export default function QiitaFeed({ isEnglish = false }: { isEnglish?: boolean }) {
     const { data, isLoading, isError, error } = useQuery<QiitaItem[]>({
         queryKey: ["qiita-trending"],
         queryFn: fetchQiitaItems,
@@ -42,7 +42,7 @@ export default function QiitaFeed() {
     if (isLoading) {
         return (
             <div className="flex items-center justify-center py-32">
-                <p className="text-gray-400 text-sm">読み込み中...</p>
+                <p className="text-gray-400 text-sm">{isEnglish ? "Loading..." : "読み込み中..."}</p>
             </div>
         );
     }
@@ -51,7 +51,8 @@ export default function QiitaFeed() {
         return (
             <div className="flex items-center justify-center py-32">
                 <p className="text-red-500 text-sm">
-                    エラー: {error instanceof Error ? error.message : "取得に失敗しました"}
+                    {isEnglish ? "Error: " : "エラー: "}
+                    {error instanceof Error ? error.message : (isEnglish ? "Failed to fetch" : "取得に失敗しました")}
                 </p>
             </div>
         );
@@ -61,9 +62,11 @@ export default function QiitaFeed() {
         <div className="min-h-screen bg-white">
             <div className="max-w-6xl mx-auto px-8 py-8">
                 <div className="mb-6">
-                    <h2 className="text-2xl font-bold text-gray-900">Qiita トレンド</h2>
+                    <h2 className="text-2xl font-bold text-gray-900">{isEnglish ? "Qiita Trending" : "Qiita トレンド"}</h2>
                     <p className="text-sm text-gray-400 mt-1">
-                        直近7日間・いいね30以上 — {data?.length ?? 0} 件
+                        {isEnglish
+                            ? `Recent articles — ${data?.length ?? 0} results`
+                            : `直近の記事 — ${data?.length ?? 0} 件`}
                     </p>
                 </div>
 

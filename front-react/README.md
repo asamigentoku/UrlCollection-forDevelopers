@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# front-react — URL Collection Frontend
 
-## Getting Started
+Next.js (App Router) で構築された、開発者向け公式ドキュメント集のフロントエンドです。
 
-First, run the development server:
+## 機能
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **JA / EN 言語切り替え** — ヘッダーのトグルで全 UI を日本語/英語に切り替え
+- **公式ドキュメント一覧** — Firebase Firestore からデータを取得してカテゴリ/検索フィルタで表示
+- **Qiita トレンド** — Qiita API から最新記事を取得して表示
+
+## ディレクトリ構成
+
+```
+app/
+├── components/
+│   ├── QiitaFeed.tsx     # Qiita トレンドタブ（isEnglish prop で言語切り替え）
+│   ├── UrlList_en.tsx    # 英語版 URL 一覧
+│   └── UrlList_ja.tsx    # 日本語版 URL 一覧
+├── hooks/
+│   └── fetchData.ts      # Firestore からデータ取得するカスタムフック
+├── lib/
+│   └── firebase.ts       # Firebase 初期化
+├── types/
+│   ├── qiita_type.ts
+│   └── urls_type.ts
+├── layout.tsx
+├── page.tsx              # メインページ（タブ・言語トグル管理）
+└── providers.tsx         # React Query Provider
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 環境変数
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+`.env.local` に以下を設定してください：
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+NEXT_PUBLIC_FIREBASE_API_KEY=...
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=...
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=...
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=...
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=...
+NEXT_PUBLIC_FIREBASE_APP_ID=...
+```
 
-## Learn More
+## ローカル開発
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm install
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+[http://localhost:3000](http://localhost:3000) で確認できます。
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## ビルド & 静的エクスポート
 
-## Deploy on Vercel
+```bash
+npm run build
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`out/` ディレクトリに静的ファイルが生成されます。  
+AWS CloudFront + S3 にそのままデプロイできます。

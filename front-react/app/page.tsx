@@ -40,34 +40,32 @@ export default function Home() {
                   ))}
               </nav>
 
-              {/* 言語トグル（ホームのみ表示） */}
-              {activeTab === "home" && (
-                  <div
-                      className="flex items-center rounded-full p-1 gap-1"
-                      style={{backgroundColor: "#1f1f1f"}}
+              {/* 言語トグル */}
+              <div
+                  className="flex items-center rounded-full p-1 gap-1"
+                  style={{backgroundColor: "#1f1f1f"}}
+              >
+                  <button
+                      onClick={() => setIsEnglish(false)}
+                      className="px-4 py-1.5 rounded-full text-sm font-medium transition-all"
+                      style={!isEnglish
+                          ? {backgroundColor: "#ffffff", color: "#0a0a0a"}
+                          : {backgroundColor: "transparent", color: "#6b7280"}
+                      }
                   >
-                      <button
-                          onClick={() => setIsEnglish(false)}
-                          className="px-4 py-1.5 rounded-full text-sm font-medium transition-all"
-                          style={!isEnglish
-                              ? {backgroundColor: "#ffffff", color: "#0a0a0a"}
-                              : {backgroundColor: "transparent", color: "#6b7280"}
-                          }
-                      >
-                          JA
-                      </button>
-                      <button
-                          onClick={() => setIsEnglish(true)}
-                          className="px-4 py-1.5 rounded-full text-sm font-medium transition-all"
-                          style={isEnglish
-                              ? {backgroundColor: "#ffffff", color: "#0a0a0a"}
-                              : {backgroundColor: "transparent", color: "#6b7280"}
-                          }
-                      >
-                          EN
-                      </button>
-                  </div>
-              )}
+                      JA
+                  </button>
+                  <button
+                      onClick={() => setIsEnglish(true)}
+                      className="px-4 py-1.5 rounded-full text-sm font-medium transition-all"
+                      style={isEnglish
+                          ? {backgroundColor: "#ffffff", color: "#0a0a0a"}
+                          : {backgroundColor: "transparent", color: "#6b7280"}
+                      }
+                  >
+                      EN
+                  </button>
+              </div>
           </header>
 
           {/* ── ヒーローセクション（ホームのみ） ── */}
@@ -109,7 +107,7 @@ export default function Home() {
           {/* ── メインコンテンツ ── */}
           <div className="flex-1">
               {activeTab === "home"  && (isEnglish ? <UrlList_en /> : <UrlList_ja />)}
-              {activeTab === "trend" && <QiitaFeed />}
+              {activeTab === "trend" && <QiitaFeed isEnglish={isEnglish} />}
           </div>
 
           {/* ── フッター ── */}
