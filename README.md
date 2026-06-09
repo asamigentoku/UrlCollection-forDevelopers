@@ -6,7 +6,10 @@ AI時代だからこそ必要となる、開発者のための「公式ドキュ
 
 ---
 
-## URL :https://dyktoa4djg2uu.cloudfront.net/
+## URL :https://gati-docs-kokodayo.com
+
+## ドメイン
+Cloudflareでドメインを取得し、AWS cloudfrontにホスティング
 
 ## デモ
 ![デモ](front.png)
