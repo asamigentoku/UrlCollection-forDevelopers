@@ -5,6 +5,7 @@ import { QiitaItem } from "../types/qiita_type";
 async function fetchQiitaItems(): Promise<QiitaItem[]> {
     const res = await fetch(
         "https://qiita.com/api/v2/items?page=1&per_page=20&query=created:%3E2026-05-02"
+
     );
     if (!res.ok) throw new Error(`Qiita API error: ${res.status}`);
     return res.json();
